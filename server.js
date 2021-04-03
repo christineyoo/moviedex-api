@@ -1,11 +1,15 @@
 require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
+const cors = require("cors");
+const helmet = require("helmet");
 const MOVIEDEX = require("./movies.json");
 
 const app = express();
 
 app.use(morgan("dev"));
+app.use(cors());
+app.use(helmet());
 
 app.use(function validateBearerToken(req, res, next) {
   const authToken = req.get("Authorization");
@@ -18,7 +22,7 @@ app.use(function validateBearerToken(req, res, next) {
   next();
 });
 
-app.get("/movies", function handleGetMovies(req, res) {
+app.get("/movie", function handleGetMovies(req, res) {
   let response = MOVIEDEX;
 
   // If a genre is provided, filter movies by that genre
